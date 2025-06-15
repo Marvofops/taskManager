@@ -44,8 +44,7 @@ INSTALLED_APPS += [
     'cloudinary',
     'cloudinary_storage',
 ]
-DEFAULT_FILE_STORAGE =
-'cloudinary_storage.storage.MediaCloudinaryStorage'
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 CLOUDINARY_STORAGE ={
     'CLOUD_NAME':os.getenv('dgt3zq3s3'),
