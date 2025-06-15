@@ -1,0 +1,62 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>To-Do List</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    .container{
+      color: #943c3c;
+      text-align: center;
+      font-family: 'Times New Roman', Times, serif;
+      font-size: xx-large;
+      font-weight: bolder;
+      
+    }
+    .button{
+      background-color: blanchedalmond;
+      color: #943c3c;
+      font-size: large;
+    }
+
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>📝 My To-Do List</h1>
+    
+        <h3>Welcome To The App</h3>
+
+
+    {% if user.is_authenticated %}
+      <button class="button"><a href="{% url 'logout_user' %}">logout</a></button>
+      {% for task in tasks %}
+      <div class="container" style="text-align: left;">
+      
+      <li><h3><a href="{% url 'update' task.id %}">{{task.name}}</a></h3></li>
+      <p>{{task.description}}</p>       
+    <img src="{{ task.image.url }}" alt="img" style="max-width: 20%; padding: auto; border-radius: 50%;"></img>
+     
+     
+      
+    
+    </div>
+  
+    {% endfor %}
+     <button class="button" ><a href="{% url 'add' %}">Add task</a></button>
+     
+
+    {% else %}
+    <div>
+    <button class="button"><a href="{% url 'login_user' %}">Login</a></button>
+    <button class="button"><a href="{% url 'register_user' %}">Register</a></button>
+    <p><em>Hello, Please login or create account to be able to view and access tasks</em></p>
+    </div>
+    
+    {% endif %}
+    </div>
+    
+</body>
+</html>

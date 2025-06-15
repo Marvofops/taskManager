@@ -1,0 +1,21 @@
+<div>
+<h2>{{ task.name }}</h2>
+<h3>{{task.description}}</h3>
+<button><a href="{% url 'add' %}"></a>Add Task</button>
+{% if task.is_complete %}
+<p>This task has been marked as complete</p>
+{% else %}
+<br>
+<p>This task is incomplete</p>
+{% endif %}
+<div>
+  <img src="{{ task.image.url }}" alt="img" style="max-width: 15%; padding: auto; border-radius: 20%;"></img></div>
+</div>
+<button class="button" ><a href="{% url 'delete_task' task.id %}">Delete task</a></button>
+
+<h4>Update for from below!!!</h4>
+<form method="post" action="{% url 'update' task.id %}" enctype="multipart/form-data">
+          {% csrf_token %}
+          {{ form2.as_p }}
+          <button>Update</button>
+        </form>
