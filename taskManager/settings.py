@@ -40,11 +40,11 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'tasks',
 ]
-INTSTALLED_APPS += [
+INSTALLED_APPS += [
     'cloudinary',
     'cloudinary_storage',
 ]
-DEFAULT_FILE_STORAGE=
+DEFAULT_FILE_STORAGE =
 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 CLOUDINARY_STORAGE ={
