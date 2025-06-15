@@ -40,6 +40,18 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'tasks',
 ]
+INTSTALLED_APPS += [
+    'cloudinary',
+    'cloudinary_storage',
+]
+DEFAULT_FILE_STORAGE=
+'cloudinary_storage.storage.MediaCloudinaryStorage'
+
+CLOUDINARY_STORAGE ={
+    'CLOUD_NAME':os.getenv('dgt3zq3s3'),
+    'API_KEY':os.getenv('362962745848823'),
+    'API_SECRET':os.getenv('d0HfUlyJy80mitabBr5aDl8ht_A'),
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
