@@ -13,7 +13,7 @@ class Category(models.Model):
 class Task(models.Model):
     name= models.CharField(max_length=100)
     description= models.TextField(max_length=500)
-    image= models.ImageField(upload_to="uploads/task/")
+    image= CloudinaryField('image',blank=True,null=True)
     dueDate= models.DateTimeField(null=True)
     is_complete=models.BooleanField(default=False)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True,blank=True)
