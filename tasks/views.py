@@ -59,15 +59,16 @@ def register_user(request):
             user.email = form.cleaned_data.get('email')
             user.first_name = form.cleaned_data.get('first_name')
             user.last_name = form.cleaned_data.get('last_name')
-            user.set_password(password)
+            
             user.save()
             user = authenticate( password=user.password, username=user.username)
-            login(request, user)
-            messages.success(request, ("Registration successful :)..."))
-            return redirect('index')
-        else:
-            messages.error(request, ("There was an error with your registration, please try again..."))
-            return redirect('register_user')
+            if user is not None:
+                login(request, user)
+                messages.success(request, ("Registration successful :)..."))
+                return redirect('index')
+            else:
+                messages.error(request, ("There was an error with your registration, please try again..."))
+                return redirect('register_user')
     else:
         return render(request, 'register.html', {'form': form})
    
