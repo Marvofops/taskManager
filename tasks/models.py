@@ -1,3 +1,4 @@
+from cloudinary.models import CloudinaryField 
 from django.db import models
 from django import forms
 from django.contrib.auth.models import User
@@ -13,7 +14,7 @@ class Category(models.Model):
 class Task(models.Model):
     name= models.CharField(max_length=100)
     description= models.TextField(max_length=500)
-    image= models.ImageField(upload_to="uploads/task/")
+    image= CloudinaryField('image')
     dueDate= models.DateTimeField(null=True)
     is_complete=models.BooleanField(default=False)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True,blank=True)
