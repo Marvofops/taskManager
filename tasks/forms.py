@@ -5,21 +5,21 @@ from django.contrib.auth.models import User
 class TaskForm(forms.ModelForm):
     class Meta:
         model= Task
-        fields= ['name', 'description', 'image', 'dueDate','is_priority']
+        fields= ['name', 'description', 'image', 'dueDate','is_priority', 'category']
     dueDate = forms.DateTimeField(
         widget=forms.DateTimeInput(attrs={
             'type':'datetime-local',
             
             
         }),
-        required=False,
+        required=True,
         
     )
     
 class UpdateForm(forms.ModelForm):
     class Meta:
         model= Task
-        fields=['is_complete', 'name', 'description','image']
+        fields=['is_complete', 'name', 'description','image', 'category','dueDate']
         widgets={
             'is_complete': forms.CheckboxInput(attrs={'class': 'form-check-input', }),
         }

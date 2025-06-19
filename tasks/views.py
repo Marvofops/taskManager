@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Task
+from .models import Task, Category
 from .forms import TaskForm, UpdateForm, SignUpForm
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
@@ -9,16 +9,19 @@ from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from django import forms
 from .forms import SignUpForm
+from datetime import datetime
+
 # Create your views here.
 
 def index(request):
+    now=datetime.now()
+    
     try:
         tasks = Task.objects.filter(user=request.user)
-        return render(request, 'index.html',{'tasks':tasks})
+        return render(request, 'index.html',{'tasks':tasks,'now':now})
     except:
         return render(request, 'index.html')
-        
-
+@login_required      
 def add(request):
     
     if request.method == 'POST':
@@ -38,7 +41,7 @@ def add(request):
     else:
         form = TaskForm()    
     return render(request, 'addTask.html', {'form':form})
-
+@login_required
 def delete_task(request, task_id):
     task = get_object_or_404(Task,id=task_id, user=request.user)
     task.user = request.user
@@ -65,7 +68,7 @@ def register_user(request):
             return redirect('register_user')
     else:
         return render(request, 'register.html', {'form': form})
-    
+   
 def login_user(request):
     if request.method == "POST":
         username = request.POST['username']
@@ -81,7 +84,7 @@ def login_user(request):
     else:
         return render(request, 'login.html', {})
 
-
+@login_required
 def logout_user(request):
     logout(request)
     messages.success(request, ("You have been logged out :)..."))
@@ -90,12 +93,22 @@ def logout_user(request):
 
 def update(request, task_id):
     task = get_object_or_404(Task, id=task_id, user=request.user)
-        
+    
     if request.method == 'POST':
+      
         name= request.POST.get('name')
         description= request.POST.get('description')
         image= request.FILES.get('image')
         is_complete = request.POST.get('is_complete') == 'on'  # Convert checkbox value to boolean
+        dueDate= request.POST.get('dueDate')
+        category = request.POST.get('category')
+        if category:
+            try:
+                task.category=Category.objects.get(id=category)
+            except:
+                task.category=None
+        if dueDate:
+            task.dueDate=dueDate
         if image:
             task.image = image
         if name:
@@ -103,7 +116,7 @@ def update(request, task_id):
         if description:
             task.description = description
         if is_complete:
-            task.is_complete = is_complete
+            task.is_complete = True
         else:
             task.is_complete = False
       

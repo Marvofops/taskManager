@@ -1,21 +1,83 @@
-<div>
-<h2>{{ task.name }}</h2>
-<h3>{{task.description}}</h3>
-<button><a href="{% url 'add' %}"></a>Add Task</button>
-{% if task.is_complete %}
-<p>This task has been marked as complete</p>
-{% else %}
-<br>
-<p>This task is incomplete</p>
-{% endif %}
-<div>
-  <img src="{{ task.image.url }}" alt="img" style="max-width: 15%; padding: auto; border-radius: 20%;"></img></div>
-</div>
-<button class="button" ><a href="{% url 'delete_task' task.id %}">Delete task</a></button>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View task</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="{% url 'index' %}">Task Manager</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav
+                    me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="{% url 'index' %}">Home</a>
+                    </li>
+                    {% if user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'logout_user' %}">Logout</a>
+                    </li>
+                    {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'login_user' %}">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'register_user' %}">Register</a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
 
-<h4>Update for from below!!!</h4>
-<form method="post" action="{% url 'update' task.id %}" enctype="multipart/form-data">
-          {% csrf_token %}
-          {{ form2.as_p }}
-          <button>Update</button>
-        </form>
+</head>
+<body>
+    {%if task.is_complete %}
+    <h4>You marked this task as complete</h4>
+    {% endif %}
+    <div class="card" style="width: 18rem;">
+  <img src="{{task.image.url}}" class="card-img-top" alt="task-image">
+  <div class="card-body">
+    <h5 class="card-title">{{task.name}}</h5>
+    <p class="card-text">{{task.description}}</p>
+    <p class="card-text">{{task.category}}</p>
+    
+  </div>
+</div>
+    <form method="post" action="{% url 'update' task.id %}" class="container mt-5" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="name" class="form-label">Task Name</label>
+            <input type="text" class="form-control" id="name" name="name" value="{{ task.name }}" required>
+        </div>
+        <div class="mb-3">
+            <label for="description" class="form-label">Description</label>
+            <textarea class="form-control" id="description" name="description" rows="3" required>{{ task.description }}</textarea>
+        </div>
+        <div class="mb-3">
+            <label for="image" class="form-label">Image</label>
+            {{ form2.image }}
+        </div>
+        <div class="mb-3 form-check">
+            <input type="checkbox" class="form-check-input" id="is_complete" name="is_complete" {% if task.is_complete %}checked{% endif %}>
+            <label class="form-check-label" for="is_complete">Mark as Complete</label>
+        </div>
+        <div class="mb-3">
+            <label for="dueDate" class="form-label">Due Date</label>
+            <input type="datetime-local" class="form-control" id="dueDate" name="dueDate" value="{{ task.dueDate }}">
+        </div>
+        <div class="mb-3">
+            <label for="category" class="form-label">Task Category</label>
+            {{ form2.category }}
+            </div>
+
+
+        <button type="submit" class="btn btn-primary">Update Task</button>
+    </form>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" crossorigin="anonymous"></script>
+</body>
+</html>

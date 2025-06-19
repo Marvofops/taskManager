@@ -2,61 +2,81 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>To-Do List</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
-  <style>
-    .container{
-      color: #943c3c;
-      text-align: center;
-      font-family: 'Times New Roman', Times, serif;
-      font-size: xx-large;
-      font-weight: bolder;
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Manager</title>
+    
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
+ <nav class="navbar navbar-expand-lg bg-body-tertiary">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="{%url 'index' %}">Task Manager</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="{%url 'index' %}">Home</a>
+        </li>
+        {% if user.is_authenticated %}
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'logout_user' %}">Logout</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'add' %}">Add Task</a>
+        </li>
+        {% else %}
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'login_user' %}">Login</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'register_user' %}">Register</a>
+        </li>
+        {% endif %}
+        
+      </ul>
       
-    }
-    .button{
-      background-color: blanchedalmond;
-      color: #943c3c;
-      font-size: large;
-    }
-
-  </style>
+    </div>
+  </div>
+</nav>
 </head>
 <body>
   <div class="container">
-    <h1>📝 My To-Do List</h1>
-    
-        <h3>Welcome To The App</h3>
-
-
-    {% if user.is_authenticated %}
-      <button class="button"><a href="{% url 'logout_user' %}">logout</a></button>
-      {% for task in tasks %}
-      <div class="container" style="text-align: left;">
-      
-      <li><h3><a href="{% url 'update' task.id %}">{{task.name}}</a></h3></li>
-      <p>{{task.description}}</p>       
-    <img src="{{ task.image.url }}" alt="img" style="max-width: 20%; padding: auto; border-radius: 50%;"></img>
-     
-     
-      
-    
-    </div>
-  
-    {% endfor %}
-     <button class="button" ><a href="{% url 'add' %}">Add task</a></button>
-     
-
-    {% else %}
-    <div>
-    <button class="button"><a href="{% url 'login_user' %}">Login</a></button>
-    <button class="button"><a href="{% url 'register_user' %}">Register</a></button>
-    <p><em>Hello, Please login or create account to be able to view and access tasks</em></p>
-    </div>
-    
-    {% endif %}
-    </div>
-    
+  <div class="row">
+        {% for task in tasks %}
+        <div class="col-4">
+        <div class="card" style="width: 18rem;">
+        <img src="{{ task.image.url }}" class="card-img-top" alt="task image" style="max-width: 20%; height:20%; border-radius: 10%;">
+        <div class="card-body">
+            <h5 class="card-title"><a href="{% url 'update' task.id %}">{{task.name}}</a></h5>
+            <p class="card-text">{{task.description}}</p>
+            {% if task.is_complete %}
+            <p>This task is complete</p>
+            {% endif %}
+            <a href="{% url 'update' task.id %}" class="btn btn-primary">Update Task</a>
+            {% if task.dueDate.date > now.date %}
+            <p class="card-text">This task is supposed to be completed on {{task.dueDate}}</p>
+            {% elif task.dueDate.date == now.date %}
+            <p class="card-text">This task is supposed to be completed today at {{task.dueDate.time}} </p>
+            {% elif  task.Duedate.date < now.date  %}
+            <p class="card-text">Task was due on {{task.dueDate}}</p>
+            
+            {% endif %}
+        </div>
+        </div>
+        </div>
+        {% endfor %}
+        </div>
+        </div>
+        {% if not user.is_authenticated %}
+        <div class="container">
+          <div class="row">
+            <div class="col">
+              <h3>Welcome to my task manager site please creatae account or login to continue</h3>
+            </div>
+          </div>
+        </div>
+        {% endif %}
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" crossorigin="anonymous"></script>
 </body>
 </html>
