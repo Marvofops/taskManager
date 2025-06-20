@@ -54,13 +54,7 @@ def register_user(request):
         form = SignUpForm(request.POST)
         if form.is_valid():
             user = form.save()
-            user.username = form.cleaned_data['username']
-            user.password = form.cleaned_data.get('password1')
-            user.email = form.cleaned_data.get('email')
-            user.first_name = form.cleaned_data.get('first_name')
-            user.last_name = form.cleaned_data.get('last_name')
-            
-            user.save()
+        
             user = authenticate( request, password=user.password, username=user.username)
             if user is not None:
                 login(request, user)
