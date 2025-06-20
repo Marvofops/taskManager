@@ -39,6 +39,16 @@
     
     <form method="post" action="{% url 'register_user' %}" class="container mt-5">
         {% csrf_token %}
+
+    {% if form.errors %}
+      <div class="alert alert-danger">
+        <ul>
+          {% for field, errors in form.errors.items %}
+            <li><strong>{{ field|capfirst }}:</strong> {{ errors|join:", " }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+    {% endif %}
         <div class="mb-3">
             <label for="username" class="form-label">Username</label>
             {{ form.username }}
