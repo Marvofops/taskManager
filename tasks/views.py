@@ -61,7 +61,7 @@ def register_user(request):
             user.last_name = form.cleaned_data.get('last_name')
             
             user.save()
-            user = authenticate( password=user.password, username=user.username)
+            user = authenticate( request, password=user.password, username=user.username)
             if user is not None:
                 login(request, user)
                 messages.success(request, ("Registration successful :)..."))
