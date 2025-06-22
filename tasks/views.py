@@ -132,3 +132,18 @@ def update(request, task_id):
         form2= UpdateForm(instance=task)
     task = get_object_or_404(Task, id=task_id, user=request.user)
     return render(request, 'task.html', {'form2': form2,'task':task})   
+
+@login_required
+def view_by_category(request, category_id):
+    category = get_object_or_404(Category, id=category_id)
+    tasks = Task.objects.filter(category=category, user=request.user)
+    
+    if not tasks:
+        messages.info(request, "No tasks found in this category.")
+    
+    return render(request, 'view_by_category.html', {'tasks': tasks, 'category': category})
+
+@login_required
+def categories(request):
+    categories = Category.objects.all()
+    return render(request, 'category.html', {'categories': categories})

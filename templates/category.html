@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block title %}<h2>CATEGORIES</h2> {{ config.site_name }}{% endblock %}
+
+{% block content %}
+<div class="category-list">
+    <ul>
+        {% for category in categories %}
+        <li><a href="{% url 'view_by_category' category.id %}">{{ category.name }}</a></li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}

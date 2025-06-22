@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container">
+    <h2 class="mt-4">Tasks by Category</h2>
+    <div class="row">
+        <div class="col-md-3">
+            
+                    <ul class="list-group list-group-flush">
+                        {% for task in tasks %}
+                        <h3 style="color: cadetblue; text-shadow: 0cqmax;">{{ task.category.name }}</h3>
+                            <li class="list-group-item">
+                                <a href="{% url 'update' task.id %}">{{ task.name }}</a>
+                                <p>{{ task.description }}</p>
+                                {% if task.is_complete %}
+                                    <span class="badge bg-success">Complete</span>
+                                {% else %}
+                                    <span class="badge bg-warning">Incomplete</span>
+                                {% endif %}
+                                <p>Due: {{ task.dueDate }}</p>
+                            </li>
+                            </ul>
+                    </div>
+                    </div>
+                    </div>
+                    </div>
+                    {% endfor %}
+{% endblock %}               

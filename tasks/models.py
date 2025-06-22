@@ -14,11 +14,11 @@ class Category(models.Model):
 class Task(models.Model):
     name= models.CharField(max_length=100)
     description= models.TextField(max_length=500)
-    image= CloudinaryField('image')
+    image= CloudinaryField('image', null=True, blank=True)
     dueDate= models.DateTimeField(null=True)
     is_complete=models.BooleanField(default=False)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True,blank=True)
-    is_priority = models.BooleanField(default=False)
+    
     user = models.ForeignKey(User, on_delete=models.CASCADE,null=True)
     
     

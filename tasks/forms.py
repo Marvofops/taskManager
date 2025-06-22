@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 class TaskForm(forms.ModelForm):
     class Meta:
         model= Task
-        fields= ['name', 'description', 'image', 'dueDate','is_priority', 'category']
+        fields= ['name', 'description', 'image', 'dueDate', 'category']
     dueDate = forms.DateTimeField(
         widget=forms.DateTimeInput(attrs={
             'type':'datetime-local',
@@ -62,5 +62,4 @@ class SignUpForm(UserCreationForm):
 		self.fields['password2'].widget.attrs['class'] = 'form-control'
 		self.fields['password2'].widget.attrs['placeholder'] = 'Confirm Password'
 		self.fields['password2'].label = ''
-      
       

@@ -1,55 +1,15 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Task Manager</title>
-    
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
- <nav class="navbar navbar-expand-lg bg-body-tertiary">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="{%url 'index' %}">Task Manager</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="{%url 'index' %}">Home</a>
-        </li>
-        {% if user.is_authenticated %}
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'logout_user' %}">Logout</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'add' %}">Add Task</a>
-        </li>
-        {% else %}
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'login_user' %}">Login</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'register_user' %}">Register</a>
-        </li>
-        {% endif %}
-        
-      </ul>
-      
-    </div>
-  </div>
-</nav>
-</head>
-<body>
+{% extends 'base.html' %}
+{% block content %}
   <div class="container">
   <div class="row">
         {% for task in tasks %}
-        <div class="col-4">
-        <div class="card" style="width: 18rem;">
-        <img src="{{ task.image.url }}" class="card-img-top" alt="task image" style="max-width: 20%; height:20%; border-radius: 10%;">
+        <div class="col-md-4 col-sm-4">
+        <div class="card" style="width: auto; margin-bottom: 20px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+        <img src="{{ task.image.url }}" class="card-img-top" alt="task image" style="max-width: 30%; height:15%; border-radius: 10%;
+        margin: 10px auto; display: block; ">
         <div class="card-body">
-            <h5 class="card-title"><a href="{% url 'update' task.id %}">{{task.name}}</a></h5>
-            <p class="card-text">{{task.description}}</p>
+            <h5 class="card-title "><a href="{% url 'update' task.id %}">{{task.name}}</a></h5>
+            <p class="card-text ">{{task.description}}</p>
             {% if task.is_complete %}
             <p>This task is complete</p>
             {% endif %}
@@ -57,10 +17,13 @@
             {% if task.dueDate.date > now.date %}
             <p class="card-text">This task is supposed to be completed on {{task.dueDate}}</p>
             {% elif task.dueDate.date == now.date %}
-            <p class="card-text">This task is supposed to be completed today at {{task.dueDate.time}} </p>
-            {% elif  task.Duedate.date < now.date  %}
-            <p class="card-text">Task was due on {{task.dueDate}}</p>
+            <p class="card-text" style="color: orangered;">This task is supposed to be completed today at {{task.dueDate.time}} </p>
+            {% elif  task.dueDate.date < now.date  %}
+            <p class="card-text" style="color: red;">Task was due on {{task.dueDate}}</p>
             
+            {% endif %}
+            {% if not task %}
+            <p class="card-text">You've not added any tasks yet</p>
             {% endif %}
         </div>
         </div>
@@ -72,11 +35,15 @@
         <div class="container">
           <div class="row">
             <div class="col">
-              <h3>Welcome to my task manager site please creatae account or login to continue</h3>
+              <h3>Welcome to my task manager site please create account or login to continue</h3>
             </div>
-          </div>
-        </div>
+            <div class="card col">
+              <div class="card-body">
+                <h5 class="card-title">Login</h5>
+                <p class="card-text">If you already have an account, please login to manage your tasks.</p>
+                <a href="{% url 'login_user' %}" class="btn btn-primary">Login</a>
+                <a href="{% url 'register_user' %}" class="btn btn-secondary">Register</a>
+              </div>
+            </div>
         {% endif %}
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" crossorigin="anonymous"></script>
-</body>
-</html>
+ {% endblock %}

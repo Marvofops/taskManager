@@ -7,7 +7,9 @@ urlpatterns=[
     path('delete_task/<int:task_id>/',views.delete_task, name='delete_task'),
     path('register_user/', views.register_user, name='register_user'),
     path('login_user/', views.login_user, name='login_user'),
-    
+    path('view_by_category/<int:category_id>/', views.view_by_category, name='view_by_category'),
     path('logout_user/', views.logout_user, name='logout_user'),
     path('update/<int:task_id>', views.update, name='update'),
+    path('categories', views.categories, name='categories'),
+    path('view_by_category/<int:category_id>/', views.view_by_category, name='view_by_category'),
 ]
