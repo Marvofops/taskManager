@@ -34,7 +34,6 @@ def add(request):
             task.description = form.cleaned_data['description']
             task.image = form.cleaned_data['image']
             task.dueDate = form.cleaned_data['dueDate']
-            
             task.user= request.user
             task.save()
             return redirect('index')
